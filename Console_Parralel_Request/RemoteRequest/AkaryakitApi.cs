@@ -12,10 +12,25 @@ namespace Console_Parralel_Request.RemoteRequest
     public class AkaryakitApi
     {
         protected HttpClient _appClient = null;
+        protected Dictionary<string, string> _headers = new ();
         public AkaryakitApi()
         {
             _appClient = new HttpClient();
             GetHttpClient();
+
+            _headers.Add("istanbul","kadikoy");
+            _headers.Add("istanbul", "besiktas");
+            _headers.Add("istanbul", "beykoz");
+            _headers.Add("istanbul", "maltepe");
+            _headers.Add("istanbul", "eminonu");
+
+            _headers.Add("izmir", "gaziemir");
+            _headers.Add("izmir", "menemen");
+            _headers.Add("izmir", "menderes");
+            _headers.Add("izmir", "konak");
+            _headers.Add("izmir", "odemis");
+
+
         }
 
         private HttpClient GetHttpClient()
@@ -31,6 +46,7 @@ namespace Console_Parralel_Request.RemoteRequest
         public async Task CustomReq(string district, string city)
         {
             string _error = "";
+            List<Result> results = new();
 
             HttpResponseMessage response = null;
 
@@ -42,7 +58,7 @@ namespace Console_Parralel_Request.RemoteRequest
                 {
                     Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(response.Content.ReadAsStringAsync().Result);
 
-
+                    results = myDeserializedClass.result;
                 }
             }
             catch (Exception ex)

@@ -1,9 +1,10 @@
 ﻿using Console_Parralel_Request.Operations;
+using Console_Parralel_Request.RemoteRequest;
 
 ThreadComparing threadComparing = new ();
 WaitThreadFinished waitThreadFinished = new ();
 ParallelProcessing parallelProcessing = new();
-
+AkaryakitApi akaryakitApi = new ();
 
 #region thread in sonlanmasını beklemeden yanı anda başlatınca içerideki verinin tamamı alınamıyor
 //threadComparing.ComparerThreads();
@@ -19,7 +20,12 @@ Console.WriteLine();
 
 #region parallel processing
 //parallelProcessing.Process();
-parallelProcessing.Process_ParalelForeach();
+//parallelProcessing.Process_ParalelForeach();
+#endregion
+
+
+#region akaryakit
+
 #endregion
 
 Console.ReadLine();
