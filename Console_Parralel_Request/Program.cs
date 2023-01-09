@@ -1,7 +1,9 @@
 ﻿using Console_Parralel_Request.Operations;
 
 ThreadComparing threadComparing = new ();
-WaitThreadFinished waitThreadFinished = new ();  
+WaitThreadFinished waitThreadFinished = new ();
+ParallelProcessing parallelProcessing = new();
+
 
 #region thread in sonlanmasını beklemeden yanı anda başlatınca içerideki verinin tamamı alınamıyor
 //threadComparing.ComparerThreads();
@@ -10,8 +12,13 @@ WaitThreadFinished waitThreadFinished = new ();
 Console.WriteLine();
 
 #region thread in sonlanması beklenirse
-waitThreadFinished.ComparerThreads();   
+//waitThreadFinished.ComparerThreads();
 #endregion
 
+Console.WriteLine();
+
+#region parallel processing
+parallelProcessing.Process();
+#endregion
 
 Console.ReadLine();

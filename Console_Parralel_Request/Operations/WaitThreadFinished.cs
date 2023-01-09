@@ -23,7 +23,7 @@ namespace Console_Parralel_Request.Operations
             /*******************************  senkron *************************************/
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 24; i++)
             {
                 helper.Counter("Counter", 0, i);
             }
@@ -44,17 +44,20 @@ namespace Console_Parralel_Request.Operations
 
             Stopwatch stopwatch2 = Stopwatch.StartNew();
 
-            const int nThreadCount = 1;
+            const int nThreadCount = 24;
             Thread[] workerThreads = new Thread[nThreadCount];
 
             /* Start Threads */
             for (int k = 0; k < nThreadCount; k++)
             {
-                foreach (var item in vList)
-                {
-                    workerThreads[k] = new Thread(() => helper.Counter("Th", 0, item));
-                    workerThreads[k].Start(/*optional thread data */);
-                }
+                //foreach (var item in vList)
+                //{
+                //    workerThreads[k] = new Thread(() => helper.Counter("Th", 0, item));
+                //    workerThreads[k].Start();
+                //}
+
+                workerThreads[k] = new Thread(() => helper.Counter("Th", 0, k));
+                workerThreads[k].Start(/*optional thread data */);
 
             }
 
