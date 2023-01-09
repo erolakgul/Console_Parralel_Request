@@ -22,12 +22,15 @@ namespace Console_Parralel_Request.Operations
             Stopwatch stopwatch2 = Stopwatch.StartNew();
             helper.Calculator();
             stopwatch2.Stop();
-            Console.WriteLine($"2. Paralel olmayan işlemin bitiş süresi : {stopwatch2.Elapsed} ");
+            Console.WriteLine($"2. Paralel olmayan işlemin bitiş süresi : {stopwatch2.Elapsed}"); // ... Result => {helper.sonuc}
 
+
+
+            Helper helper2 = new();
             Stopwatch stopwatch3 = Stopwatch.StartNew();
-            helper.ParallelCalculator();
+            helper2.ParallelCalculator();
             stopwatch3.Stop();
-            Console.WriteLine($"2. Paralel işlemin bitiş süresi : {stopwatch3.Elapsed} ");
+            Console.WriteLine($"2. Paralel işlemin bitiş süresi         : {stopwatch3.Elapsed}"); // ... Result => {helper2.sonuc}
         }
     }
 }

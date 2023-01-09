@@ -67,16 +67,6 @@ namespace Console_Parralel_Request.Operations
                 workerThreads[k].Join();
 
             }
-            //Thread tread1 = new Thread(() => helper.Counter("Th", 0, 0));
-            //tread1.Start();
-
-            //Thread tread2 = new Thread(() => helper.Counter("Th", 0, 1));
-            //tread2.Start();
-
-            //Thread tread3 = new Thread(() => helper.Counter("Th", 0, 2));
-            //tread3.Start();
-
-
 
             stopwatch2.Stop();
 

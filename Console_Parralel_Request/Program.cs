@@ -12,13 +12,13 @@ ParallelProcessing parallelProcessing = new();
 Console.WriteLine();
 
 #region thread in sonlanması beklenirse
-//waitThreadFinished.ComparerThreads();
+waitThreadFinished.ComparerThreads();
 #endregion
 
 Console.WriteLine();
 
 #region parallel processing
-parallelProcessing.Process();
+//parallelProcessing.Process();
 #endregion
 
 Console.ReadLine();

@@ -22,9 +22,7 @@
 
         public void Calculator()
         {
-            double sonuc = 0;
-
-            for (int i = 0; i < 999999999; i++)
+            for (int i = 0; i < 999999999; i++) //999999999
             {
                 sonuc += Convert.ToDouble(Math.Sin(i) / Math.Cos(i));
             }
@@ -33,12 +31,16 @@
 
         public void ParallelCalculator()
         {
-            double sonuc = 0;
-
             Parallel.For(0, 999999999, i =>
             {
                 sonuc += Convert.ToDouble(Math.Sin(i) / Math.Cos(i));
             });
+        }
+
+        private double Topla(int ite,double sonuc)
+        {
+            sonuc += ite;
+            return sonuc;
         }
     }
 }
