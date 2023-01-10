@@ -1,10 +1,11 @@
 ﻿using Console_Parralel_Request.Operations;
 using Console_Parralel_Request.RemoteRequest;
+using Console_Parralel_Request.RemoteRequest.Dto;
 
-ThreadComparing threadComparing = new ();
-WaitThreadFinished waitThreadFinished = new ();
+ThreadComparing threadComparing = new();
+WaitThreadFinished waitThreadFinished = new();
 ParallelProcessing parallelProcessing = new();
-AkaryakitApi akaryakitApi = new ();
+AkaryakitApi akaryakitApi = new();
 
 #region thread in sonlanmasını beklemeden yanı anda başlatınca içerideki verinin tamamı alınamıyor
 //threadComparing.ComparerThreads();
@@ -25,6 +26,27 @@ Console.WriteLine();
 
 
 #region akaryakit
+
+List<State> stateList = await akaryakitApi.CustomReqAsync();
+
+//foreach (var item in akaryakitApi._cityList)
+//{
+
+//}
+
+foreach (var item in stateList)
+{
+    Console.WriteLine($"city List => {item.name}  : {item.premium}");
+}
+
+stateList.Clear();
+
+List<State> stateListThreads = await akaryakitApi.CustomReqAsyncMultiThread();
+
+foreach (var item in stateListThreads)
+{
+    Console.WriteLine($"city List => {item.name}  : {item.premium}");
+}
 
 #endregion
 

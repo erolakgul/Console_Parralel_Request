@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,25 +13,48 @@ namespace Console_Parralel_Request.RemoteRequest
     public class AkaryakitApi
     {
         protected HttpClient _appClient = null;
-        protected Dictionary<string, string> _headers = new ();
+
+        public Dictionary<string, string> _cityList = null;
+        public List<State> stateList = null;
+
         public AkaryakitApi()
         {
             _appClient = new HttpClient();
             GetHttpClient();
 
-            _headers.Add("istanbul","kadikoy");
-            _headers.Add("istanbul", "besiktas");
-            _headers.Add("istanbul", "beykoz");
-            _headers.Add("istanbul", "maltepe");
-            _headers.Add("istanbul", "eminonu");
+            _cityList = new();
 
-            _headers.Add("izmir", "gaziemir");
-            _headers.Add("izmir", "menemen");
-            _headers.Add("izmir", "menderes");
-            _headers.Add("izmir", "konak");
-            _headers.Add("izmir", "odemis");
+            _cityList.Add("istanbul","kadikoy");
+            _cityList.Add("istanbul", "besiktas");
+            _cityList.Add("istanbul", "beykoz");
+            _cityList.Add("istanbul", "maltepe");
+            _cityList.Add("istanbul", "eminonu");
+
+            _cityList.Add("izmir", "gaziemir");
+            _cityList.Add("izmir", "menemen");
+            _cityList.Add("izmir", "menderes");
+            _cityList.Add("izmir", "konak");
+            _cityList.Add("izmir", "odemis");
+
+            _cityList.Add("ankara", "etimesgut");
+            _cityList.Add("ankara", "evren");
+            _cityList.Add("ankara", "kalecik");
+            _cityList.Add("ankara", "sincan");
+            _cityList.Add("ankara", "polatli");
+
+            _cityList.Add("aydin", "efeler");
+            _cityList.Add("aydin", "nazilli");
+            _cityList.Add("aydin", "kusadasi");
+            _cityList.Add("aydin", "incirliova");
+            _cityList.Add("aydin", "soke");
+
+            _cityList.Add("mugla", "bodrum");
+            _cityList.Add("mugla", "dalaman");
+            _cityList.Add("mugla", "fethiye");
+            _cityList.Add("mugla", "datca");
 
 
+            stateList = new();
         }
 
         private HttpClient GetHttpClient()
@@ -43,32 +67,83 @@ namespace Console_Parralel_Request.RemoteRequest
             return _appClient;
         }
 
-        public async Task CustomReq(string district, string city)
+        public async Task<List<State>> CustomReqAsync()  //string district, string city
         {
+            Stopwatch stopwatch = new();
+
+            stopwatch.Start();
+
             string _error = "";
-            List<Result> results = new();
 
-            HttpResponseMessage response = null;
-
-            try
+            foreach (var item in _cityList)
             {
-                response = await _appClient.GetAsync(_appClient.BaseAddress + "district=" + district + "&city=" + city);
+                HttpResponseMessage response = null;
 
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(response.Content.ReadAsStringAsync().Result);
+                    response = await _appClient.GetAsync(_appClient.BaseAddress + "district=" + item.Value + "&city=" + item.Key);
 
-                    results = myDeserializedClass.result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(response.Content.ReadAsStringAsync().Result);
+
+                        stateList.Add(myDeserializedClass.result.state);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                _error = ex.Message;
-            }
+                catch (Exception ex)
+                {
+                    _error = ex.Message;
+                }
 
+            }
+            stopwatch.Stop();
 
+            Console.WriteLine($"Paralel olmayan işlemin bitiş süresi         : {stopwatch.Elapsed}");
+
+            return stateList;
         }
 
+
+        public async Task<List<State>> CustomReqAsyncMultiThread()  //string district, string city
+        {
+            ParallelOptions parallelOptions = new()
+            {
+                MaxDegreeOfParallelism = 8
+            };
+
+            Stopwatch stopwatch = new();
+
+            stopwatch.Start();
+
+            string _error = "";
+
+            await Parallel.ForEachAsync(_cityList, parallelOptions, async (item, token) =>
+            {
+                HttpResponseMessage response = null;
+
+                try
+                {
+                    response = await _appClient.GetAsync(_appClient.BaseAddress + "district=" + item.Value + "&city=" + item.Key);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(response.Content.ReadAsStringAsync().Result);
+
+                        stateList.Add(myDeserializedClass.result.state);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _error = ex.Message;
+                }
+
+            });
+
+            stopwatch.Stop();
+            Console.WriteLine($"8 kanallı Paralel işlemin bitiş süresi         : {stopwatch.Elapsed}");
+
+            return stateList;
+        }
 
     }
 }
