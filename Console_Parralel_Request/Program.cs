@@ -27,25 +27,23 @@ Console.WriteLine();
 
 #region akaryakit
 
-List<State> stateList = await akaryakitApi.CustomReqAsync();
-
-//foreach (var item in akaryakitApi._cityList)
-//{
-
-//}
+List<Result> stateList = await akaryakitApi.CustomReqAsync();
 
 foreach (var item in stateList)
 {
-    Console.WriteLine($"city List => {item.name}  : {item.premium}");
+    Console.WriteLine($"city List => {item.marka}  : {item.benzin}");
 }
 
 stateList.Clear();
+akaryakitApi.stateList.Clear();
 
-List<State> stateListThreads = await akaryakitApi.CustomReqAsyncMultiThread();
+
+
+List<Result> stateListThreads = await akaryakitApi.CustomReqAsyncMultiThread();
 
 foreach (var item in stateListThreads)
 {
-    Console.WriteLine($"city List => {item.name}  : {item.premium}");
+    Console.WriteLine($"Thread city List => {item.marka}  : {item.benzin}");
 }
 
 #endregion
